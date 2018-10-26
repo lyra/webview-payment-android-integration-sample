@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SampleAndroidWebView</string>
+
+    <string name="amount_hint">Amount</string>
+    <string name="email_hint">Email</string>
+    <string name="order_hint">Order ID</string>
+
+    <string name="pay_btn_text">Pay with PayZen</string>
+
+    <string-array name="card_list">
+        <item>All</item>
+        <item>CB</item>
+        <item>Visa</item>
+        <item>Mastercard</item>
+    </string-array>
+
+    <string name="contactless_scanner">Tap your NFC paycard\nto the back of your phone</string>
+</resources>
