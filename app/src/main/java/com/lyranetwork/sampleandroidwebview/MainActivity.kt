@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import com.lyranetwork.sampleandroidwebview.payzen.AbstractPayZenActivity
-import com.lyranetwork.sampleandroidwebview.payzen.PayZenPayment
-import com.lyranetwork.sampleandroidwebview.payzen.PaymentData
-import com.lyranetwork.sampleandroidwebview.payzen.PaymentResult
+import com.lyranetwork.sampleandroidwebview.payment.AbstractPaymentActivity
+import com.lyranetwork.sampleandroidwebview.payment.PaymentProvider
+import com.lyranetwork.sampleandroidwebview.payment.PaymentData
+import com.lyranetwork.sampleandroidwebview.payment.PaymentResult
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -24,15 +24,15 @@ private const val PAYMENT_MODE = "TEST"
  *
  * This main activity allows to user to fill payment data (amount, order id, so on)
  * After retrieving these payment data:
- * <li>PayZenPayment.execute(payload: JSONObject, serverUrl: String, activity: Activity) is executed</li>.
+ * <li>PaymentProvider.execute(payload: JSONObject, serverUrl: String, activity: Activity) is executed</li>.
  * <li>Merchant server is called with payment data and returns a payment url</li>
  * <li>From this url, payment page is displayed</li>
- * <li>The payment result is handled by handlePaymentResult(result: PayzenResultJSONObject) method</li>
+ * <li>The payment result is handled by handlePaymentResult(result: PaymentResult) method</li>
  *
  * For readability purposes in this example, we do not use logs
  * @author Lyra Network
  */
-class MainActivity: AbstractPayZenActivity() {
+class MainActivity: AbstractPaymentActivity() {
 
     /**
      * onCreate method
@@ -80,13 +80,13 @@ class MainActivity: AbstractPayZenActivity() {
     fun onPayClick(view: View) {
         val payload = createPaymentPayload()
         progressBar.visibility = View.VISIBLE
-        PayZenPayment.execute(payload, SERVER_URL, this)
+        PaymentProvider.execute(payload, SERVER_URL, this)
     }
 
     /**
      * Handle payment result
      *
-     * @param result PaymentResult contains a success boolean. If success is false then result contains also errorCode as an Int (PayZenPaymentErrorCode) and cause as a String value
+     * @param result PaymentResult contains a success boolean. If success is false then result contains also errorCode as an Int (PaymentErrorCode) and cause as a String value
      */
     override fun handlePaymentResult(result: PaymentResult) {
         progressBar.visibility = View.GONE

@@ -5,7 +5,7 @@
     <string name="email_hint">Email</string>
     <string name="order_hint">Order ID</string>
 
-    <string name="pay_btn_text">Pay with PayZen</string>
+    <string name="pay_btn_text">Pay</string>
 
     <string-array name="card_list">
         <item>All</item>
