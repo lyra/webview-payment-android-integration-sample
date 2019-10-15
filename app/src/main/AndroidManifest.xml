@@ -20,7 +20,7 @@
         </activity>
 
         <activity
-            android:name=".payzen.PaymentActivity" />
+            android:name=".payment.PaymentActivity" />
     </application>
 
 

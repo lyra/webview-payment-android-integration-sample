@@ -1,4 +1,4 @@
-package com.lyranetwork.sampleandroidwebview.payzen.scanning
+package com.lyranetwork.sampleandroidwebview.payment.scanning
 
 import android.app.Activity
 import android.content.Intent

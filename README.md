@@ -2,7 +2,7 @@
 
 ## Summary
 
-Based on [PayZen](https://payzen.io), the aim of this repository is to explain how mobile payment by [Lyra Network](https://www.lyra-network.com/) webview can be done easily.
+The aim of this repository is to explain how webview mobile payment integration can be done easily.
 
 In this repo, Credit Card scanning by mobile camera is demonstrated too.
 
@@ -18,10 +18,10 @@ In this repo, Credit Card scanning by mobile camera is demonstrated too.
 <span id="how_it_is_work"></span>
 ## How it works
 
-To be able to do some payments with PayZen, three elements are required:
+To be able to do some payments, three elements are required:
 * A contract with your Payment service provider
-* A mobile app with a PayZen integration: this integration is explained with this repository
-* A merchant server that executes payments transactions with PayZen servers: [merchant server demonstration](https://github.com/lyra/webview-payment-sparkjava-integration-sample)
+* A mobile app with a webview mobile payment integration: this integration is explained with this repository
+* A merchant server that executes payments transactions with the payment servers: [merchant server demonstration](https://github.com/lyra/webview-payment-sparkjava-integration-sample)
 
 <span id="getting_started"></span>
 ## Getting started
@@ -46,7 +46,7 @@ To be able to do some payments with PayZen, three elements are required:
 
 1. See merchant server repo, `https://github.com/lyra/webview-payment-sparkjava-integration-sample`. Follow steps of getting started chapter and run your server
 
-2. Copy-paste `com.lyranetwork.sampleandroidwebview.payzen` package into your project
+2. Copy-paste `com.lyranetwork.sampleandroidwebview.payment` package into your project
 
 3. Add the following code  into your AndroidManifest file
 
@@ -57,7 +57,7 @@ To be able to do some payments with PayZen, three elements are required:
     In application part, add the embedded payment activity:
     ```xml
     <activity
-        android:name=".payzen.PaymentActivity" />
+        android:name=".payment.PaymentActivity" />
     ```
     
 	<p align="center">
@@ -71,14 +71,14 @@ To be able to do some payments with PayZen, three elements are required:
     ```
 
 
-5. In your activity where you want execute a payment, add an inheritance of this activity to `AbstractPayZenActivity`.
+5. In your activity where you want execute a payment, add an inheritance of this activity to `AbstractPaymentActivity`.
 
 	Example:
 	```kotlin
-	class MainActivity: AbstractPayZenActivity() {
+	class MainActivity: AbstractPaymentActivity() {
 	```
 
-6. Execute `PayZenPayment.execute(payload: PaymentData, serverUrl: String, activity: Activity)` method by providing the following fields:
+6. Execute `PaymentProvider.execute(payload: PaymentData, serverUrl: String, activity: Activity)` method by providing the following fields:
 	- serverUrl: replace by your merchant server url
     - payload: PaymentData that represents your payment data:
 		- mode: *mandatory*, TEST or PRODUCTION (your targeted environment)
@@ -97,7 +97,7 @@ To be able to do some payments with PayZen, three elements are required:
     payload.setMode("TEST")
 	payload.setCurrency("978")
 		
-	PayZenPayment.execute(payload, "http://my-merchant-server", this)
+	PaymentProvider.execute(payload, "http://my-merchant-server", this)
 	```
 	
 7. Implement `handlePaymentResult(result: PaymentResult)` in order to handle the payment result.
@@ -126,9 +126,9 @@ In the branch below, you can see a demonstration of credit card scanning by NFC 
 
 https://github.com/lyra/webview-payment-android-integration-sample/tree/card_scanning_by_nfc/
 
-**Lyra Network does not guarantee and is not responsible for the quality of the external libraries.**
+**Our company does not guarantee and is not responsible for the quality of the external libraries.**
 
-**Moreover, be aware that the use of these librairies is not [PCI-DSS](https://www.pcisecuritystandards.org/document_library?category=pcidss&document=pci_dss) compliant.**
+**Moreover, be aware that the use of these libraries is not [PCI-DSS](https://www.pcisecuritystandards.org/document_library?category=pcidss&document=pci_dss) compliant.**
 
 <span id="technology"></span>	
 ## Technology

@@ -1,4 +1,4 @@
-package com.lyranetwork.sampleandroidwebview.payzen
+package com.lyranetwork.sampleandroidwebview.payment
 
 import android.annotation.TargetApi
 import android.app.Activity
@@ -16,9 +16,9 @@ import java.util.*
 
 
 /**
- * PayZen payment error codes
+ * Payment error codes
  */
-object PayZenPaymentErrorCode {
+object PaymentErrorCode {
     // Unknown error
     const val UNKNOWN_ERROR = 1
 
@@ -94,7 +94,7 @@ class PaymentData : JSONObject() {
 /**
  * Util class to manage merchant server call and payment result construction
  */
-object PayZenPayment {
+object PaymentProvider {
     // Technical code used for specifying the result of WebView activity
     const val WEBVIEW_ACTIVITY_CODE_RESULT = 981
 
@@ -142,9 +142,9 @@ object PayZenPayment {
                     val content = BufferedReader(InputStreamReader(conn.errorStream)).use(BufferedReader::readText)
                     activity.runOnUiThread {
                         try {
-                            returnsResult(false, PayZenPaymentErrorCode.SERVER_ERROR, conn.responseCode.toString() + ":" + JSONObject(content).get("errorMessage"), activity)
+                            returnsResult(false, PaymentErrorCode.SERVER_ERROR, conn.responseCode.toString() + ":" + JSONObject(content).get("errorMessage"), activity)
                         } catch (e: JSONException) {
-                            returnsResult(false, PayZenPaymentErrorCode.SERVER_ERROR, conn.responseCode.toString(), activity)
+                            returnsResult(false, PaymentErrorCode.SERVER_ERROR, conn.responseCode.toString(), activity)
                         }
                     }
                 }
@@ -152,15 +152,15 @@ object PayZenPayment {
                 out.close()
             } catch (e: SocketTimeoutException) {
                 activity.runOnUiThread {
-                    returnsResult(false, PayZenPaymentErrorCode.TIMEOUT_ERROR, "Timeout error", activity)
+                    returnsResult(false, PaymentErrorCode.TIMEOUT_ERROR, "Timeout error", activity)
                 }
             } catch (e: ErrnoException) {
                 activity.runOnUiThread {
-                    returnsResult(false, PayZenPaymentErrorCode.NO_CONNECTION_ERROR, "No connection error", activity)
+                    returnsResult(false, PaymentErrorCode.NO_CONNECTION_ERROR, "No connection error", activity)
                 }
             } catch (e: IOException) {
                 activity.runOnUiThread {
-                    returnsResult(false, PayZenPaymentErrorCode.UNKNOWN_ERROR, e.message, activity)
+                    returnsResult(false, PaymentErrorCode.UNKNOWN_ERROR, e.message, activity)
                 }
             }
 
@@ -175,7 +175,7 @@ object PayZenPayment {
      * @param cause String?
      */
     fun returnsResult(value: Boolean, errorCode: Int?, cause: String?, activity: Activity) {
-        (activity as AbstractPayZenActivity).handlePaymentResult(constructPaymentResult(value, errorCode, cause))
+        (activity as AbstractPaymentActivity).handlePaymentResult(constructPaymentResult(value, errorCode, cause))
     }
 
     /**
