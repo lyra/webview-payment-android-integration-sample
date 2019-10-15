@@ -1,13 +1,13 @@
-package com.lyranetwork.sampleandroidwebview.payzen
+package com.lyranetwork.sampleandroidwebview.payment
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import org.json.JSONObject
 
 /**
- * AbstractPayZenActivity
+ * AbstractPaymentActivity
  */
-abstract class AbstractPayZenActivity: AppCompatActivity() {
+abstract class AbstractPaymentActivity: AppCompatActivity() {
 
     /**
      * Handle payment result
@@ -27,7 +27,7 @@ abstract class AbstractPayZenActivity: AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Manage payment result
-        if (requestCode == PayZenPayment.WEBVIEW_ACTIVITY_CODE_RESULT && data != null) {
+        if (requestCode == PaymentProvider.WEBVIEW_ACTIVITY_CODE_RESULT && data != null) {
             val result = JSONObject(data.getStringExtra("paymentResult"))
             val paymentResult = PaymentResult()
             if (result.has("cause")) {
