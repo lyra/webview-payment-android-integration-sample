@@ -1,24 +1,20 @@
 package com.lyranetwork.sampleandroidwebview.payment
 
 import android.annotation.TargetApi
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
-import android.webkit.*
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import org.json.JSONObject
-import com.lyranetwork.sampleandroidwebview.R
-import com.lyranetwork.sampleandroidwebview.payment.scanning.CreditCardManagement
 
 
 // url of the last step of payment process
@@ -36,9 +32,6 @@ class PaymentActivity: AppCompatActivity() {
 
     private lateinit var progressBar: ProgressBar
 
-    private lateinit var webView: WebView
-
-    lateinit var scanBtn: FloatingActionButton
      /**
      * onCreate method
      * Activity creation
@@ -56,54 +49,12 @@ class PaymentActivity: AppCompatActivity() {
         setContentView(contentView)
 
         // Init web view
-        webView = initWebview(redirectionUrl)
+        val webView = redirectionUrl?.let { initWebview(it) }
         contentView.addView(webView)
 
         progressBar = initProgressBar()
         contentView.addView(progressBar)
-
-        // Credit card scanning
-        scanBtn = initScanBtn()
-        contentView.addView(scanBtn)
-
     }
-
-    /**
-     * Allow to retrieve to Card IO onScanResult
-     *
-     * @param requestCode Int
-     * @param resultCode Int
-     * @param data Intent?
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        CreditCardManagement.onScanResult(requestCode, data, webView)
-    }
-
-    /**
-     * Credit card scanning button initialisation
-     *
-     * @return FloatingActionButton
-     */
-    private fun initScanBtn(): FloatingActionButton {
-        var scanBtn = FloatingActionButton(this)
-        val scanBtnLyt = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-        scanBtnLyt.gravity = Gravity.BOTTOM or Gravity.RIGHT
-        scanBtnLyt.bottomMargin = 30
-        scanBtnLyt.rightMargin = 30
-        scanBtn.layoutParams = scanBtnLyt
-        scanBtn.setImageResource(R.drawable.camera)
-        scanBtn.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-        (scanBtn as View).visibility = View.INVISIBLE
-        scanBtn.setOnClickListener {
-            CreditCardManagement.scan(this)
-        }
-
-        return scanBtn
-    }
-
 
     /**
      * When back button is pressed
@@ -125,6 +76,7 @@ class PaymentActivity: AppCompatActivity() {
 
         return progressBar
     }
+
     /**
      * Web view initialisation
      * Instantiation & configuration of web view
@@ -140,9 +92,6 @@ class PaymentActivity: AppCompatActivity() {
         // Enable javascript
         webView.settings.javaScriptEnabled = true
 
-        /* Register a new JavaScript interface called HTMLOUT */
-        webView.addJavascriptInterface(HTMLExtractorJavaScriptInterface(this), "HTMLExtractor")
-
         // Allow to debug WebView from Chrome Dev Tools
         WebView.setWebContentsDebuggingEnabled(false)
 
@@ -150,14 +99,10 @@ class PaymentActivity: AppCompatActivity() {
         webView.webViewClient = object: WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 progressBar.visibility = View.GONE
-
-                // Permits to load HTML content to process custom task
-                view.loadUrl("javascript:window.HTMLExtractor.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
-
                 super.onPageFinished(view, url)
             }
 
-            @Suppress("OverridingDeprecatedMember")
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return checkUrl(webView, url)
             }
@@ -268,25 +213,6 @@ class PaymentActivity: AppCompatActivity() {
             else -> view.loadUrl(url)
         }
         return (!isCallBack)
-    }
-}
-
-internal class HTMLExtractorJavaScriptInterface(_activity: Activity) {
-
-    private val activity = _activity
-
-    private val isPaymentPage = "function setCardData(cardData)"
-
-    //Get current HTML loaded on webview
-    @JavascriptInterface
-    fun processHTML(html: String) {
-        // process the html
-        if (html.contains(isPaymentPage)) {
-            var webViewActivity = activity as PaymentActivity
-            webViewActivity.runOnUiThread(Runnable {
-                (webViewActivity.scanBtn as View).visibility = View.VISIBLE
-            })
-        }
     }
 }
 
