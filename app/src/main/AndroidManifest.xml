@@ -4,19 +4,15 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Activate only for NFC usage -->
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
-
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,10 +20,7 @@
         </activity>
 
         <activity
-            android:name=".payzen.PaymentActivity" />
-
-        <activity
-            android:name=".payzen.nfc.NFCActivity" />
+            android:name=".payment.PaymentActivity" />
     </application>
 
 

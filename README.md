@@ -1,10 +1,9 @@
-# Webview Payment integration example with NFC
+# Webview Payment integration example
 
 ## Summary
 
-Based on [PayZen](https://payzen.io), the aim of this repository is to explain how mobile payment by [Lyra Network](https://www.lyra-network.com/) webview can be done easily.
+The aim of this repository is to explain how webview mobile payment integration can be done easily.
 
-In this repo, Credit Card scanning by NFC is demonstrated too.
 
 ## Table of contents
 
@@ -18,10 +17,10 @@ In this repo, Credit Card scanning by NFC is demonstrated too.
 <span id="how_it_is_work"></span>
 ## How it works
 
-To be able to do some payments with PayZen, two elements are required:
+To be able to do some payments, two elements are required::
 * A contract with your Payment service provider
-* A mobile app with a PayZen integration: this integration is explained with this repository
-* A merchant server that executes payments transactions with PayZen servers: [merchant server demonstration](https://github.com/lyra/webview-payment-sparkjava-integration-sample)
+* A mobile app with a webview mobile payment integration: this integration is explained with this repository.
+* A merchant server that executes payments transactions with the payment servers: [merchant server demonstration](https://github.com/lyra/webview-payment-sparkjava-integration-sample)
 
 <span id="getting_started"></span>
 ## Getting started
@@ -31,8 +30,6 @@ To be able to do some payments with PayZen, two elements are required:
 1. See merchant server repo, `https://github.com/lyra/webview-payment-sparkjava-integration-sample`. Follow steps of getting started chapter and run your server
 
 2. Clone the repo, `git clone https://github.com/lyra/webview-payment-android-integration-sample.git`. 
-
-3. Change to Credit Card scanning branch, `git checkout card_scanning_by_nfc`. 
 
 3. Open the project under Android Studio
 
@@ -46,44 +43,32 @@ To be able to do some payments with PayZen, two elements are required:
 
 1. See merchant server repo, `https://github.com/lyra/webview-payment-sparkjava-integration-sample`. Follow steps of getting started chapter and run your server
 
-2. Copy-paste `com.lyranetwork.sampleandroidwebview.payzen` package into your project
+2. Copy-paste `com.lyranetwork.sampleandroidwebview.payment` package into your project
 
 3. Add the following code  into your AndroidManifest file
-    
+
     ```xml
-    <uses-permission android:name="android.permission.INTERNET" />`
-	<uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
     ```
     
-    In application part, add the embedded payment activities:
+    In application part, add the embedded payment activity:
     ```xml
     <activity
-        android:name=".payzen.PaymentActivity" />
-		
-	<activity
-        android:name=".payzen.nfc.NFCActivity" />
+        android:name=".payment.PaymentActivity" />
     ```
     
 	<p align="center">
 	  <img src="embedded_activity.png"/>
 	</p>
     
-4. Add the following dependencies into your `build.gradle` of `app` folder
-    ```gradle
-        implementation 'com.github.devnied.emvnfccard:library:2.1.1'
-        implementation "com.android.support:design:28.0.0"
-    ```
-
-
-5. In your activity where you want execute a payment, add an inheritance of this activity to `AbstractPayZenActivity`.
+4. In your activity where you want execute a payment, add an inheritance of this activity to `AbstractPaymentActivity`.
 
 	Example:
 	```kotlin
-	class MainActivity: AbstractPayZenActivity() {
+	class MainActivity: AbstractPaymentActivity()
 	```
 
-6. Execute `PayZenPayment.execute(payload: PaymentData, serverUrl: String, activity: Activity)` method by providing the following fields:
+5. Execute `PaymentProvider.execute(payload: PaymentData, serverUrl: String, activity: Activity)` method by providing the following fields:
 	- serverUrl: replace by your merchant server url
     - payload: PaymentData that represents your payment data:
 		- mode: *mandatory*, TEST or PRODUCTION (your targeted environment)
@@ -102,10 +87,10 @@ To be able to do some payments with PayZen, two elements are required:
     payload.setMode("TEST")
 	payload.setCurrency("978")
 		
-	PayZenPayment.execute(payload, "http://my-merchant-server", this)
+	PaymentProvider.execute(payload, "http://my-merchant-server", this)
 	```
 	
-7. Implement `handlePaymentResult(result: PaymentResult)` in order to handle the payment result.
+6. Implement `handlePaymentResult(result: PaymentResult)` in order to handle the payment result.
 
 	Example:
 	```kotlin
@@ -118,27 +103,33 @@ To be able to do some payments with PayZen, two elements are required:
     }
 	```
 
-
-8. Run it and that's all! :)
+7. Run it and that's all! :)
 
 <span id="features"></span>
 ## Additional features
 
-An other additional feature can be used:
+Also, two additional features can be used:
 * Credit card scanning by mobile camera
 
 In the branch below, you can see a demonstration of credit card scanning by mobile camera based on [Card.io SDK](https://www.card.io/)
 
 https://github.com/lyra/webview-payment-android-integration-sample/tree/card_scanning/
 
-**Lyra Network does not guarantee and is not responsible for the quality of the external libraries.**
+* Credit card scanning by NFC
 
-**Moreover, be aware that the use of these librairies is not [PCI-DSS](https://www.pcisecuritystandards.org/document_library?category=pcidss&document=pci_dss) compliant.**
+In the branch below, you can see a demonstration of credit card scanning by NFC based on [EMV NFC Card](https://github.com/devnied/EMV-NFC-Paycard-Enrollment)
+
+https://github.com/lyra/webview-payment-android-integration-sample/tree/card_scanning_by_nfc/
+
+
+**Our company does not guarantee and is not responsible for the quality of the external libraries.**
+
+**Moreover, be aware that the use of these libraries is not [PCI-DSS](https://www.pcisecuritystandards.org/document_library?category=pcidss&document=pci_dss) compliant.**
 
 <span id="technology"></span>	
 ## Technology
 
-Developped in Android Studio 3.2, written in Kotlin 1.2.70, this sample app requires Android API 19 or superior.
+Developped in Android Studio Chipmunk | 2021.2.1, written in Kotlin 1.7.0, this sample app requires Android API 19 or superior.
 
 <span id="troubleshooting"></span>	
 ## Troubleshooting
