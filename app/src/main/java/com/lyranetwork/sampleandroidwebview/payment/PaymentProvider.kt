@@ -107,7 +107,7 @@ object PaymentProvider {
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun execute(payload: PaymentData, serverUrl: String, activity: Activity) {
-        doAsync {
+        DoAsync {
             try {
                 val conn = URL(serverUrl).openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
@@ -202,7 +202,8 @@ object PaymentProvider {
      * @property handler Function0<Unit>
      * @constructor
      */
-    class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+    class DoAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+        @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: Void?): Void? {
             handler()
             return null

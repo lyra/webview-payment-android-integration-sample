@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
 import android.webkit.WebResourceRequest
@@ -49,7 +49,7 @@ class PaymentActivity: AppCompatActivity() {
         setContentView(contentView)
 
         // Init web view
-        val webView = initWebview(redirectionUrl)
+        val webView = redirectionUrl?.let { initWebview(it) }
         contentView.addView(webView)
 
         progressBar = initProgressBar()
@@ -102,7 +102,7 @@ class PaymentActivity: AppCompatActivity() {
                 super.onPageFinished(view, url)
             }
 
-            @Suppress("OverridingDeprecatedMember")
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return checkUrl(webView, url)
             }

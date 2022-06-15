@@ -48,7 +48,7 @@ To be able to do some payments, two elements are required::
 3. Add the following code  into your AndroidManifest file
 
     ```xml
-    <uses-permission android:name="android.permission.INTERNET" />`
+    <uses-permission android:name="android.permission.INTERNET" />
     ```
     
     In application part, add the embedded payment activity:
@@ -65,7 +65,7 @@ To be able to do some payments, two elements are required::
 
 	Example:
 	```kotlin
-	class MainActivity: AbstractPaymentActivity() {
+	class MainActivity: AbstractPaymentActivity()
 	```
 
 5. Execute `PaymentProvider.execute(payload: PaymentData, serverUrl: String, activity: Activity)` method by providing the following fields:
@@ -129,7 +129,7 @@ https://github.com/lyra/webview-payment-android-integration-sample/tree/card_sca
 <span id="technology"></span>	
 ## Technology
 
-Developped in Android Studio 3.2, written in Kotlin 1.2.70, this sample app requires Android API 19 or superior.
+Developped in Android Studio Chipmunk | 2021.2.1, written in Kotlin 1.7.0, this sample app requires Android API 19 or superior.
 
 <span id="troubleshooting"></span>	
 ## Troubleshooting
